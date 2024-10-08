@@ -31,5 +31,9 @@ namespace webApi.Models
 
         [BsonElement("AdminOrCSRApproved")]
         public bool AdminOrCSRApproved { get; set; }
+
+        [BsonElement("ActiveUser")]
+        public bool ActiveUser { get; set; }   
+
     }
 }

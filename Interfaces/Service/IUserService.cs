@@ -1,12 +1,13 @@
 ﻿using MongoDB.Bson;
 using webApi.Models;
+using webApi.Models.Enums;
 
 namespace webApi.Interfaces.Service
 {
     public interface IUserService
     {
         Task<IEnumerable<ApplicationUser>> GetAllUsers();
-        Task<ApplicationUser> GetUserById(ObjectId id);
+        Task<ApplicationUser> GetUserById(Guid userId);
         Task<ApplicationUser> GetUserByEmail(string email);
         Task CreateUser(ApplicationUser user);
         Task<bool> UpdateUser(Guid UserId, ApplicationUser user);
@@ -15,5 +16,6 @@ namespace webApi.Interfaces.Service
         Task<bool> UserExists(string userName);
         Task<List<ApplicationUser>> GetUsersPendingApprovalAsync();
         Task<bool> ApproveUserByUserIdAsync(Guid UserId);
+        Task<bool> ActiveateDeactivateUser(Guid UserId, UserActivateDeactivate activateDeactivate);
     }
 }

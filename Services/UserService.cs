@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using webApi.Interfaces.Repository;
 using webApi.Interfaces.Service;
 using webApi.Models;
+using webApi.Models.Enums;
 
 namespace webApi.Services
 {
@@ -20,9 +21,9 @@ namespace webApi.Services
             return await _userRepository.GetAllUsers();
         }
 
-        public async Task<ApplicationUser> GetUserById(ObjectId id)
+        public async Task<ApplicationUser> GetUserById(Guid userId)
         {
-            return await _userRepository.GetUserById(id);
+            return await _userRepository.GetUserById(userId);
         }
 
         public async Task<ApplicationUser> GetUserByEmail(string email)
@@ -82,6 +83,12 @@ namespace webApi.Services
         public async Task<bool> ApproveUserByUserIdAsync(Guid UserId)
         {
             return await _userRepository.ApproveUserByUserIdAsync(UserId);
+        }
+
+        public async Task<bool> ActiveateDeactivateUser(Guid UserId, UserActivateDeactivate activateDeactivate)
+        {
+               return await _userRepository.ActiveateDeactivateUser(UserId, activateDeactivate);
+            
         }
     }
 }

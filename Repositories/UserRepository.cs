@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using webApi.Data;
 using webApi.Interfaces.Repository;
 using webApi.Models;
+using webApi.Models.Enums;
 
 namespace webApi.Repositories
 {
@@ -20,9 +21,9 @@ namespace webApi.Repositories
             return await _users.Find(_ => true).ToListAsync();
         }
 
-        public async Task<ApplicationUser> GetUserById(ObjectId id)
+        public async Task<ApplicationUser> GetUserById(Guid userId)
         {
-            return await _users.Find(user => user.Id == id).FirstOrDefaultAsync();
+            return await _users.Find(user => user.UserId == userId).FirstOrDefaultAsync();
         }
 
         public async Task<ApplicationUser> GetUserByEmail(string email)
@@ -66,6 +67,14 @@ namespace webApi.Repositories
             var filter = Builders<ApplicationUser>.Filter.Eq(u => u.UserId, UserId);
             var update = Builders<ApplicationUser>.Update.Set(u => u.AdminOrCSRApproved, true);
 
+            var result = await _users.UpdateOneAsync(filter, update);
+            return result.IsAcknowledged && result.ModifiedCount > 0;
+        }
+
+        public async Task<bool> ActiveateDeactivateUser(Guid UserId,UserActivateDeactivate activateDeactivate)
+        {
+            var filter = Builders<ApplicationUser>.Filter.Eq(u => u.UserId, UserId);            
+            var update = Builders<ApplicationUser>.Update.Set(u => u.ActiveUser, UserActivateDeactivate.Activate.Equals(activateDeactivate));
             var result = await _users.UpdateOneAsync(filter, update);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
